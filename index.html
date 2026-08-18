@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>کنتوربان</title>
+<style>
+body{font-family:Tahoma;background:#f3f6f8;margin:0;color:#222}
+header{background:#145078;color:white;padding:20px;font-size:24px;font-weight:bold}
+main{max-width:600px;margin:auto;padding:15px}
+.card{background:white;border-radius:15px;padding:16px;margin:12px 0;box-shadow:0 2px 8px #0002}
+button,select,textarea{width:100%;padding:14px;margin-top:9px;border-radius:10px;border:1px solid #ddd;font-size:16px;box-sizing:border-box}
+button{background:#145078;color:white;border:0;font-weight:bold}
+.green{background:#16834b}
+.status{background:#eef6ff;padding:12px;margin-top:10px;border-radius:10px}
+h3{margin-top:0}
+</style>
+</head>
+
+<body>
+
+<header>📍 کنتوربان</header>
+
+<main>
+
+<div class="card">
+<h3>📋 مأموریت 1405-00125</h3>
+<p>اشتراک: 123456</p>
+<p>کنتور: G12345</p>
+<p>آدرس: منطقه ۲، کوچه ۱۰</p>
+</div>
+
+<div class="card">
+<h3>📍 ثبت مراجعه</h3>
+<button onclick="gps()">ثبت GPS و شروع مراجعه</button>
+<div id="gps" class="status">هنوز GPS ثبت نشده</div>
+</div>
+
+<div class="card">
+<h3>نتیجه مراجعه</h3>
+
+<button onclick="setResult('تعویض انجام شد')">🟢 تعویض انجام شد</button>
+<button onclick="setResult('مشترک حضور نداشت')">🟡 مشترک حضور نداشت</button>
+<button onclick="setResult('ممانعت مشترک')">🔴 ممانعت مشترک</button>
+<button onclick="setResult('مشکل دسترسی یا فنی')">⚙️ مشکل دسترسی / فنی</button>
+
+<p id="result">نتیجه انتخاب نشده</p>
+</div>
+
+<div class="card">
+<h3>🏠 مشخصات محل</h3>
+
+<label>رنگ درب</label>
+<select id="door">
+<option>انتخاب نشده</option>
+<option>سفید</option>
+<option>قهوه‌ای</option>
+<option>آبی</option>
+<option>مشکی</option>
+<option>طوسی</option>
+<option>سبز</option>
+<option>قرمز</option>
+<option>سایر</option>
+</select>
+
+<textarea id="note" rows="4"
+placeholder="توضیحات محل..."></textarea>
+
+<button onclick="document.getElementById('photo').click()">
+📷 ثبت عکس محل
+</button>
+
+<input id="photo" type="file" accept="image/*" capture="environment"
+style="display:none">
+
+</div>
+
+<div class="card">
+<h3>🔒 ثبت نهایی</h3>
+<button class="green" onclick="save()">تأیید و ثبت نهایی</button>
+<div id="saved" class="status"></div>
+</div>
+
+</main>
+
+<script>
+
+let locationData=null;
+let selectedResult="";
+
+function setResult(x){
+selectedResult=x;
+document.getElementById("result").innerText="نتیجه: "+x;
+}
+
+function gps(){
+
+let box=document.getElementById("gps");
+box.innerText="در حال دریافت موقعیت...";
+
+if(!navigator.geolocation){
+box.innerText="GPS در این مرورگر پشتیبانی نمی‌شود";
+return;
+}
+
+navigator.geolocation.getCurrentPosition(
+
+function(position){
+
+locationData={
+latitude:position.coords.latitude,
+longitude:position.coords.longitude,
+accuracy:position.coords.accuracy,
+time:new Date().toLocaleString()
+};
+
+box.innerHTML=
+"🟢 GPS ثبت شد<br>"+
+"عرض جغرافیایی: "+locationData.latitude.toFixed(6)+"<br>"+
+"طول جغرافیایی: "+locationData.longitude.toFixed(6)+"<br>"+
+"دقت: "+Math.round(locationData.accuracy)+" متر<br>"+
+"زمان: "+locationData.time;
+
+},
+
+function(){
+box.innerText="⚠️ دریافت GPS ناموفق بود. دسترسی Location گوشی را فعال کنید.";
+},
+
+{
+enableHighAccuracy:true,
+timeout:15000,
+maximumAge:0
+}
+
+);
+
+}
+
+function save(){
+
+if(!locationData){
+alert("ابتدا GPS را ثبت کنید.");
+return;
+}
+
+if(!selectedResult){
+alert("نتیجه مراجعه را انتخاب کنید.");
+return;
+}
+
+let code="KB-"+Date.now();
+
+localStorage.setItem("kontorban_record",JSON.stringify({
+result:selectedResult,
+gps:locationData,
+door:document.getElementById("door").value,
+note:document.getElementById("note").value,
+code:code
+}));
+
+document.getElementById("saved").innerHTML=
+"🟢 گزارش با موفقیت ذخیره شد<br><br>"+
+"کد پیگیری: <b>"+code+"</b>";
+
+}
+
+</script>
+
+</body>
+</html>
