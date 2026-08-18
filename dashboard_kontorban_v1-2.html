@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#145078">
+<title>کنتوربان | داشبورد مدیر</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f6f8;color:#17202a;font-family:Tahoma,Arial,sans-serif}
+header{background:#145078;color:#fff;padding:18px;font-size:22px;font-weight:bold}
+main{max-width:1100px;margin:auto;padding:14px}.sub{font-size:12px;opacity:.85}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card,.panel{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 9px #0002;margin:12px 0}
+.stat b{display:block;font-size:30px;margin-top:8px}.green{color:#16834b}.yellow{color:#b57900}.red{color:#c52b2b}.blue{color:#145078}
+.progress{height:16px;background:#e5ebef;border-radius:99px;overflow:hidden}.progress span{display:block;height:100%;width:72%;background:#16834b}
+.search{width:100%;padding:13px;border:1px solid #d7dde2;border-radius:11px;font:inherit}
+table{width:100%;border-collapse:collapse}th,td{padding:11px;border-bottom:1px solid #edf0f2;text-align:right;font-size:14px}th{background:#f7f9fa}
+.badge{display:inline-block;padding:4px 9px;border-radius:99px;font-size:12px}.bgreen{background:#eaf8f0;color:#16834b}.byellow{background:#fff7e6;color:#8b6100}.bred{background:#fff0ef;color:#b32020}
+button{border:0;border-radius:10px;padding:9px 12px;background:#145078;color:#fff;font:inherit;cursor:pointer}
+.detail{display:none;line-height:2}.detail strong{color:#145078}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}table{min-width:700px}.tablewrap{overflow:auto}}
+@media(max-width:450px){.cards{grid-template-columns:1fr 1fr}.stat b{font-size:24px}}
+</style>
+</head>
+<body>
+<header>📍 کنتوربان — داشبورد مدیریت <div class="sub">نسخه آزمایشی ۱.۰ | اطلاعات نمونه</div></header>
+<main>
+<div class="cards">
+<div class="card stat"><span>📋 کل مأموریت‌ها</span><b class="blue">120</b></div>
+<div class="card stat"><span>🟢 انجام‌شده</span><b class="green">87</b></div>
+<div class="card stat"><span>🟡 در حال انجام</span><b class="yellow">18</b></div>
+<div class="card stat"><span>🔴 ناموفق</span><b class="red">15</b></div>
+</div>
+
+<div class="panel">
+<h3>📈 پیشرفت عملیات امروز</h3>
+<div class="progress"><span></span></div>
+<p><b>۷۲٪</b> از مأموریت‌های امروز انجام شده است.</p>
+</div>
+
+<div class="grid2">
+<div class="panel">
+<h3>👷 عملکرد مأموران</h3>
+<div class="tablewrap"><table><thead><tr><th>مأمور</th><th>کل</th><th>انجام</th><th>ناموفق</th><th>میانگین</th></tr></thead>
+<tbody>
+<tr><td>احمدی</td><td>18</td><td class="green">15</td><td class="red">3</td><td>21 دقیقه</td></tr>
+<tr><td>رضایی</td><td>16</td><td class="green">14</td><td class="red">2</td><td>24 دقیقه</td></tr>
+<tr><td>کریمی</td><td>20</td><td class="green">17</td><td class="red">3</td><td>19 دقیقه</td></tr>
+<tr><td>محمدی</td><td>14</td><td class="green">12</td><td class="red">2</td><td>26 دقیقه</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="panel">
+<h3>📸 کنترل مستندات</h3>
+<p>🔴 بدون عکس قبل: <b>7</b></p>
+<p>🔴 بدون عکس بعد: <b>3</b></p>
+<p>🟢 گزارش کامل: <b>80</b></p>
+<button onclick="alert('در نسخه واقعی این بخش به فهرست گزارش‌ها متصل می‌شود.')">مشاهده موارد نیازمند بررسی</button>
+</div>
+</div>
+
+<div class="panel">
+<h3>🔎 جستجوی مأموریت</h3>
+<input id="search" class="search" placeholder="کد مأموریت، اشتراک، کنتور یا نام مأمور..." oninput="filterRows()">
+<div class="tablewrap" style="margin-top:12px"><table id="missions"><thead><tr><th>کد</th><th>مأمور</th><th>اشتراک</th><th>نتیجه</th><th>فاصله</th><th>وضعیت</th><th></th></tr></thead>
+<tbody>
+<tr><td>1405-00125</td><td>احمدی</td><td>123456</td><td>تعویض انجام شد</td><td>18 متر</td><td><span class="badge bgreen">انجام‌شده</span></td><td><button onclick="showDetail(0)">جزئیات</button></td></tr>
+<tr><td>1405-00126</td><td>رضایی</td><td>223344</td><td>در حال انجام</td><td>42 متر</td><td><span class="badge byellow">در حال انجام</span></td><td><button onclick="showDetail(1)">جزئیات</button></td></tr>
+<tr><td>1405-00127</td><td>کریمی</td><td>778899</td><td>مشترک حضور نداشت</td><td>210 متر</td><td><span class="badge bred">ناموفق</span></td><td><button onclick="showDetail(2)">جزئیات</button></td></tr>
+<tr><td>1405-00128</td><td>محمدی</td><td>445566</td><td>تعویض انجام شد</td><td>27 متر</td><td><span class="badge bgreen">انجام‌شده</span></td><td><button onclick="showDetail(3)">جزئیات</button></td></tr>
+</tbody></table></div>
+</div>
+
+<div id="detail" class="panel detail">
+<h3>📄 جزئیات مأموریت</h3>
+<div id="detailText"></div>
+<button onclick="document.getElementById('detail').style.display='none'">بستن</button>
+</div>
+</main>
+
+<script>
+const data=[
+{code:"1405-00125",worker:"احمدی",customer:"123456",result:"تعویض انجام شد",distance:"18 متر",status:"انجام‌شده",oldMeter:"G12345",newMeter:"G98765",start:"14:12",end:"14:35",accuracy:"±8 متر",before:"ثبت شده",after:"ثبت شده"},
+{code:"1405-00126",worker:"رضایی",customer:"223344",result:"در حال انجام",distance:"42 متر",status:"در حال انجام",oldMeter:"G22331",newMeter:"-",start:"15:04",end:"-",accuracy:"±12 متر",before:"در انتظار",after:"-"},
+{code:"1405-00127",worker:"کریمی",customer:"778899",result:"مشترک حضور نداشت",distance:"210 متر",status:"ناموفق",oldMeter:"G77881",newMeter:"-",start:"13:10",end:"13:16",accuracy:"±18 متر",before:"ثبت شده",after:"-"},
+{code:"1405-00128",worker:"محمدی",customer:"445566",result:"تعویض انجام شد",distance:"27 متر",status:"انجام‌شده",oldMeter:"G44551",newMeter:"G44552",start:"11:25",end:"11:48",accuracy:"±7 متر",before:"ثبت شده",after:"ثبت شده"}
+];
+function filterRows(){let q=document.getElementById("search").value.trim().toLowerCase();document.querySelectorAll("#missions tbody tr").forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q)?"":"none")}
+function showDetail(i){let x=data[i];document.getElementById("detailText").innerHTML=
+"<p><strong>کد مأموریت:</strong> "+x.code+"</p>"+
+"<p><strong>مأمور:</strong> "+x.worker+" | <strong>اشتراک:</strong> "+x.customer+"</p>"+
+"<p><strong>نتیجه:</strong> "+x.result+"</p>"+
+"<p><strong>کنتور قدیم:</strong> "+x.oldMeter+" | <strong>کنتور جدید:</strong> "+x.newMeter+"</p>"+
+"<p><strong>شروع:</strong> "+x.start+" | <strong>پایان:</strong> "+x.end+"</p>"+
+"<p><strong>فاصله:</strong> "+x.distance+" | <strong>دقت GPS:</strong> "+x.accuracy+"</p>"+
+"<p><strong>عکس قبل:</strong> "+x.before+" | <strong>عکس بعد:</strong> "+x.after+"</p>"+
+"<p>🗺️ در نسخه واقعی، نقشه و مسیر GPS این مأموریت در همین بخش نمایش داده می‌شود.</p>";
+document.getElementById("detail").style.display="block";window.scrollTo({top:document.getElementById("detail").offsetTop-10,behavior:"smooth"})}
+</script>
+</body>
+</html>
